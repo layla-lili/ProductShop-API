@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
-let cookies=require("./data");
+// let cookies=require("./data");
+const {product} = require("./db/models/Product");
 //const db=require("./db/models/index");
 const db = require("./db/models");
-const {product} = require("./db/models/");
+// const cookies = require("./data");
+
 
 app.use(express.json());
 
@@ -19,6 +21,7 @@ db.sequelize.sync();
 app.get("/", async (req, res) => {
   console.log(req.body);
   try {
+    //product is not define NEEDS wait async
     const products = await Product.findAll({ attributes: req.body });
     res.status(200).json(products);
   } catch (error) {
@@ -45,28 +48,58 @@ app.post("/", async (req,res)=>{
   }
 });
 
-app.get("/:cookieId", (req,res)=>{
-const {cookieId}=req.params;
-const cookieFound =cookies.find((cookie) => cookie.id === +cookieId)
-if(cookieFound){
-res.status(200).json(cookieFound);
-}else{
-    res.status(404).json({message: "cookie not found"});
-}
+
+//detail
+app.get("/:cookieId", async(req,res)=>{
+  try {
+    const {cookieId}=req.params;
+    const cookieFound =await product.findByPk(cookieId)
+if(cookieFound){res.status(200).json(cookieFound);
+  }else{res.status(404).json({message: "cookie not found"});
+  }
+} catch (error) {
+    res.status(500).json({message: error.message
+    })
+  }
+
+
 });
 
 
-app.delete("/:cookieId", (req,res)=>{
+//put
+
+app.put("/:cookieId", async(req,res)=>{
+  try {
+    const {cookieId}=req.params;
+    const cookieFound =await product.findByPk(cookieId)
+if(cookieFound){
+  await cookieFound.update(req.body)
+  res.status(200).json(cookieFound);
+
+  }else{res.status(404).json({message: "cookie not found"});
+  }
+} catch (error) {
+    res.status(500).json({message: error.message
+    })
+  }
+});
+
+app.delete("/:cookieId", async(req,res)=>{
+  try{
   const {cookieId}=req.params;
-   const cookieFound =cookies.find((cookie) => cookie.id === +cookieId)
-  // if(cookieFound){
-  //  cookies=
-   cookies.filter((cookie)=> cookie !== cookieFound)
+   const cookieFound =await product.findByPk(cookieId)
+  if(cookieFound){
+    await cookieFound.destroy();
+ 
   res.status(204).end();
- // }
-  //else{
-  //     res.status(404).json({message: "cookie not found"});
-  // }
+ }
+  else{
+      res.status(404).json({message: "cookie not found"});
+ }
+}
+catch(error){
+    res.status(500).json({message: error.message});
+}
   });
 
  
