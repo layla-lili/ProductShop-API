@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
-// let cookies=require("./data");
-const {product} = require("./db/models/Product");
+// let products=require("./data");
+const {Product} = require("./db/models");
+console.log("🚀 ~ file: app.js ~ line 5 ~ Product", Product)
 //const db=require("./db/models/index");
 const db = require("./db/models");
-// const cookies = require("./data");
+// const products = require("./data");
 
 
 app.use(express.json());
@@ -21,7 +22,7 @@ db.sequelize.sync();
 app.get("/", async (req, res) => {
   console.log(req.body);
   try {
-    //product is not define NEEDS wait async
+    //Product is not define NEEDS wait async
     const products = await Product.findAll({ attributes: req.body });
     res.status(200).json(products);
   } catch (error) {
@@ -32,14 +33,14 @@ app.get("/", async (req, res) => {
 app.post("/", async (req,res)=>{
   try {
 
-    const newcookie= await Product.create(req.body);
+    const newProduct= await Product.create(req.body);
     res.status(201).json(newProduct);
             // {
-          // id: cookies[cookies.length-1].id+1,
+          // id: products[products.length-1].id+1,
           // ...req.body,
           // };
-          // cookies.push(newcookie);
-  res.status(201).json(newcookie);
+          // products.push(newProduct);
+  res.status(201).json(newProduct);
   } 
  
   catch (error) {
@@ -50,12 +51,15 @@ app.post("/", async (req,res)=>{
 
 
 //detail
-app.get("/:cookieId", async(req,res)=>{
+app.get("/:productId", async(req,res)=>{
   try {
-    const {cookieId}=req.params;
-    const cookieFound =await product.findByPk(cookieId)
-if(cookieFound){res.status(200).json(cookieFound);
-  }else{res.status(404).json({message: "cookie not found"});
+    const {productId}=req.params;
+    console.log("🚀 ~ file: app.js ~ line 57 ~ app.get ~ req.params", req.params)
+    console.log("🚀 ~ file: app.js ~ line 57 ~ app.get ~ {productId}", {productId})
+    
+    const productFound =await Product.findByPk(productId)
+if(productFound){res.status(200).json(productFound);
+  }else{res.status(404).json({message: "Product not found"});
   }
 } catch (error) {
     res.status(500).json({message: error.message
@@ -68,15 +72,15 @@ if(cookieFound){res.status(200).json(cookieFound);
 
 //put
 
-app.put("/:cookieId", async(req,res)=>{
+app.put("/:productId", async(req,res)=>{
   try {
-    const {cookieId}=req.params;
-    const cookieFound =await product.findByPk(cookieId)
-if(cookieFound){
-  await cookieFound.update(req.body)
-  res.status(200).json(cookieFound);
+    const {productId}=req.params;
+    const productFound =await Product.findByPk(productId)
+if(productFound){
+  await productFound.update(req.body)
+  res.status(200).json(productFound);
 
-  }else{res.status(404).json({message: "cookie not found"});
+  }else{res.status(404).json({message: "Product not found"});
   }
 } catch (error) {
     res.status(500).json({message: error.message
@@ -84,17 +88,17 @@ if(cookieFound){
   }
 });
 
-app.delete("/:cookieId", async(req,res)=>{
+app.delete("/:productId", async(req,res)=>{
   try{
-  const {cookieId}=req.params;
-   const cookieFound =await product.findByPk(cookieId)
-  if(cookieFound){
-    await cookieFound.destroy();
+  const {productId}=req.params;
+   const productFound =await Product.findByPk(productId)
+  if(productFound){
+    await productFound.destroy();
  
   res.status(204).end();
  }
   else{
-      res.status(404).json({message: "cookie not found"});
+      res.status(404).json({message: "Product not found"});
  }
 }
 catch(error){

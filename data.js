@@ -1,4 +1,4 @@
-const cookies = [
+const products = [
     {
       id: 1,
       name: "Chocolate Chip Cookies",

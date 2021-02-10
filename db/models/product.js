@@ -1,7 +1,9 @@
 const SequelizeSlugify = require("sequelize-slugify");
 
+
+
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define("Product", {
+  const Product  = sequelize.define("Product", {
     name: {
       type: DataTypes.STRING,
       validate: {allowNull: false,  },
