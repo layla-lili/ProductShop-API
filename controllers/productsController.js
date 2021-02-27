@@ -1,6 +1,4 @@
-
-const {Product} = require("../db/models");
-
+const { Product } = require("../db/models");
 
 exports.fetchProduct = async (productId, next) => {
   try {
@@ -45,7 +43,7 @@ exports.productDelete = async (req, res, next) => {
 exports.productUpdate = async (req, res, next) => {
   try {
     await req.product.update(req.body);
-    res.status(204).end();
+    res.status(200).json(req.product);
   } catch (error) {
     next(error);
   }

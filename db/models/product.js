@@ -1,12 +1,10 @@
 const SequelizeSlugify = require("sequelize-slugify");
 
-
-
 module.exports = (sequelize, DataTypes) => {
-  const Product  = sequelize.define("Product", {
+  const Product = sequelize.define("Product", {
     name: {
       type: DataTypes.STRING,
-      validate: {allowNull: false,  },
+      allowNull: false,
     },
     slug: {
       type: DataTypes.STRING,
@@ -17,11 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.INTEGER,
       defaultValue: 200,
-      validate: {min: 20},
+      validate: {
+        min: 20,
+      },
     },
+
     image: {
       type: DataTypes.STRING,
-      validate:{isUrl: true},
+      validate: { isUrl: true },
     },
   });
   SequelizeSlugify.slugifyModel(Product, {
