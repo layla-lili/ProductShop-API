@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const upload = require("../middleware/multer");
 
 const {
   productCreate,
@@ -37,13 +38,16 @@ app.use(express.json());
 // router.delete("/:productId");
 ////////////////////////////////////////
 
-router.post("/", productCreate);
+//single : one image onlly
+//image: name of the field of the mode
+
+router.post("/", upload.single("image"), productCreate);
 
 router.get("/", productList);
 
 router.get("/:productId", productDetail);
 
-router.put("/:productId", productUpdate);
+router.put("/:productId", upload.single("image"), productUpdate);
 
 router.delete("/:productId", productDelete);
 

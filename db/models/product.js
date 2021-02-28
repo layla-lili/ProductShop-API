@@ -14,15 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.INTEGER,
-      defaultValue: 200,
-      validate: {
-        min: 20,
-      },
+      // defaultValue: 200,
+      // validate: {
+      //   min: 20,
+      // },
     },
 
     image: {
       type: DataTypes.STRING,
-      validate: { isUrl: true },
+      // validate: { isUrl: true },
     },
   });
   SequelizeSlugify.slugifyModel(Product, {

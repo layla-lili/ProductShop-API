@@ -2,10 +2,10 @@ const express = require("express");
 const db = require("./db/models");
 const products = require("./routes/products");
 const app = express();
+const path = require("path");
 
 // Import the library:
 const cors = require("cors");
-
 // Then use it before your routes are set up:
 app.use(cors());
 
@@ -22,6 +22,9 @@ app.use(async (req, res, next) => {
 app.use(express.json());
 
 app.use("/products", products);
+// app.use("/media", express.static(path.join(__dirname, "media")));
+
+app.use("/media", express.static(path.join(__dirname, "media")));
 
 // NOT FOUND MIDDLEWARE
 app.use((req, res, next) => {

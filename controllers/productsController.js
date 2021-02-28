@@ -11,6 +11,8 @@ exports.fetchProduct = async (productId, next) => {
 
 exports.productCreate = async (req, res, next) => {
   try {
+    if (req.file)
+      req.body.image = `http://localhost:8000/media/${req.file.filename}`;
     const newProduct = await Product.create(req.body);
     res.status(201).json(newProduct);
   } catch (error) {
@@ -42,7 +44,10 @@ exports.productDelete = async (req, res, next) => {
 
 exports.productUpdate = async (req, res, next) => {
   try {
-    await req.product.update(req.body);
+    if (req.file) {
+      req.body.image = `http://localhost:8000/media/${req.file.filename}`;
+    }
+    req.body.id = await req.product.update(req.body);
     res.status(200).json(req.product);
   } catch (error) {
     next(error);
