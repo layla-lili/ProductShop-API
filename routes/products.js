@@ -3,7 +3,6 @@ const app = express();
 const upload = require("../middleware/multer");
 
 const {
-  productCreate,
   productList,
   productDetail,
   productDelete,
@@ -27,21 +26,10 @@ router.param("productId", async (req, res, next, productId) => {
 
 app.use(express.json());
 
-// router.post("/");
-
-// router.get("/");
-
-// router.get("/:productId");
-
-// router.put("/:productId");
-
-// router.delete("/:productId");
-////////////////////////////////////////
-
 //single : one image onlly
 //image: name of the field of the mode
 
-router.post("/", upload.single("image"), productCreate);
+// router.post("/", upload.single("image"), productCreate);
 
 router.get("/", productList);
 

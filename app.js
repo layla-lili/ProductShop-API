@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("./db/models");
 const products = require("./routes/products");
+const shops = require("./routes/shops");
 const app = express();
 const path = require("path");
 
@@ -22,7 +23,7 @@ app.use(async (req, res, next) => {
 app.use(express.json());
 
 app.use("/products", products);
-// app.use("/media", express.static(path.join(__dirname, "media")));
+app.use("/shops", shops);
 
 app.use("/media", express.static(path.join(__dirname, "media")));
 
@@ -42,11 +43,12 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = 8000;
+//db.sequelize.sync({ force: true });
+db.sequelize.sync();
+//db.sequelize.sync({ alter: true });
 db.sequelize.authenticate();
 
 app.listen(PORT),
   () => {
     console.log(`The application is running on localhost:${PORT}`);
   };
-
-db.sequelize.sync();

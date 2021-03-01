@@ -1,4 +1,4 @@
-const { Product } = require("../db/models");
+const { Product, Shop } = require("../db/models");
 
 exports.fetchProduct = async (productId, next) => {
   try {
@@ -9,20 +9,29 @@ exports.fetchProduct = async (productId, next) => {
   }
 };
 
-exports.productCreate = async (req, res, next) => {
-  try {
-    if (req.file)
-      req.body.image = `http://localhost:8000/media/${req.file.filename}`;
-    const newProduct = await Product.create(req.body);
-    res.status(201).json(newProduct);
-  } catch (error) {
-    next(error);
-  }
-};
+// exports.productCreate = async (req, res, next) => {
+//   try {
+//     if (req.file)
+//       req.body.image = `http://localhost:8000/media/${req.file.filename}`;
+//     const newProduct = await Product.create(req.body);
+//     res.status(201).json(newProduct);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 exports.productList = async (req, res, next) => {
   try {
-    const _products = await Product.findAll();
+    const _products = await Product.findAll({
+      attributes: { exclude: ["shopId", "createdAt", "updatedAt"] },
+      include: {
+        model: Shop,
+        as: "shop",
+        attributes: ["id", "name"],
+        //attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
+    });
+
     res.json(_products);
   } catch (error) {
     next(error);
